@@ -1,0 +1,25 @@
+{% extends "posts/base.html" %}
+{% load staticfiles %}
+{% block title %}{{ block.super }} | Login{% endblock %}
+{% block body %}
+  <div class="container-fluid" style='background-image: url("{% static 'img/home-bg.jpg' %}")'>
+        <div class="row offset-md-3">
+            <div class="col-sm-12 col-md-6 m-5 pb-5 w3-text-white" style="border:solid 10px;border-radius: 10px; background-color: #4b5257">
+                <div class="panel panel-info">
+                    <div class="panel-heading w3-jumbo w3-center mr-5 mt-3"><h2>Login</h2></div>
+                    <div  class="panel-body">
+                        <form class='form-group' id="login_form" method="post" action="/login/">
+                            {% csrf_token %}
+                            Username: <input type="text" name="username" value="" size="50" class="form-control"/>
+                            <br />
+                            Password: <input type="password" name="password" value="" size="50" class="form-control"/>
+                            <br />
+                            <input type="submit" value="submit" class="btn btn-light"/>
+                            <div class="w3-text-red mt-2">{% include 'posts/message_display.html' %}</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

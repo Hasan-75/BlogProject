@@ -1,0 +1,62 @@
+{% extends 'posts/base.html' %}
+{% block title %}
+    {{ block.super }} | Posts
+{% endblock %}
+{% block body %}
+    {% include 'posts/header.html' %}
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-lg-8">
+                <div class="w3-hide-large w3-hide-medium">
+                    {% include 'posts/search.html' %}
+                </div>
+                {% for post in postList %}
+                    <!--post-->
+                    <div class="col-sm-12">
+                        <div class="card mb-4">
+                            {% if post.image %}
+                                <img class="card-img-top" src="{{ post.image.url }}" alt="" height="300px">
+                            {% else %}
+                                  <img class="card-img-top" src="http://via.placeholder.com/300?text=Image" height="250px">
+                            {% endif %}
+                            <div class="card-body">
+                                <h2 class="card-title"><a href="{% url 'detail-p' slug=post.slug %}">{{ post.title }}</a></h2>
+                                <p class="card-title">
+                                      {% if post.user.get_full_name %}
+                                          <strong>Posted by:</strong>
+                                          <i>{{ post.user.get_full_name }}</i>
+                                      {% endif %}
+                                </p>
+                                {% autoescape off %}
+                                    <div class="card-text">{{ post.content | truncatewords_html:20}}</div>
+                                {% endautoescape %}
+                                <br>
+                                <a href="{% url 'detail-p' slug=post.slug %}" class="btn btn-primary mt-1">Read More &rarr;</a>
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'update-p' slug=post.slug %}" class="btn btn-info mt-1">Edit</a>
+                                    <a href="{% url 'delete-p' slug=post.slug %}" class="btn btn-danger mt-1">Delete</a>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-muted">
+                                <strong>Posted at:</strong>
+                                {{ post.timeStamp | timesince }} ago &nbsp;|&nbsp;
+                                 <strong>Last updated:</strong>
+                                {{ post.update | timesince }} ago
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% include 'posts/pagination.html' %}
+            </div>
+            <div class="col-sm-4 col-md-5 col-lg-4 w3-hide-small" style="height: 100%">
+                <!-- Search Widget -->
+                {% include 'posts/search.html' %}
+                <!-->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

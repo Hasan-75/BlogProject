@@ -1,0 +1,78 @@
+{% extends 'posts/base.html' %}
+{% block title %}
+    Posts | {{ block.super }}
+{% endblock %}
+{% block body %}
+    {% include 'posts/header.html' %}
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="flex-column-reverse">
+                <!-->
+                <!-->
+              {% for post in postList %}
+                <!-- Blog Entries Column -->
+                <div class="col-md-8">
+                  <!-- Blog Post -->
+                  <div class="card mb-4">
+                      {% if post.image %}
+                        <img class="card-img-top" src="{{ post.image.url }}" alt="" height="300px">
+                      {% else %}
+                          <img class="card-img-top" src="http://via.placeholder.com/300?text=Image" height="250px">
+                      {% endif %}
+                    <div class="card-body">
+                      <h2 class="card-title"><a href="{% url 'detail-p' slug=post.slug %}">{{ post.title }}</a></h2>
+                      <p class="card-title">
+                          {% if post.user.get_full_name %}
+                            <strong>Posted by:</strong>
+                              <i>{{ post.user.get_full_name }}</i>
+                          {% endif %}
+                      </p>
+                      {% autoescape off %}
+                        <div class="card-text">{{ post.content | truncatechars:100}}</div>
+                      {% endautoescape %}
+                      <a href="{% url 'detail-p' slug=post.slug %}" class="btn btn-primary">Read More &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <strong>Posted at:</strong>
+                        {{ post.timeStamp | timesince }} ago &nbsp;|&nbsp;
+                         <strong>Last updated:</strong>
+                        {{ post.update | timesince }} ago
+                    </div>
+                  </div>
+                    <hr>
+                </div>
+                <br>
+            {% endfor %}
+            </div>
+
+        <div class="breadcrumb col-lg-8">
+            <div class="pagination">
+            <span class="step-links">
+                <div class="btn-group">
+                {% if postList.has_previous %}
+                    <a href="?page={{ postList.previous_page_number }}" class="btn btn-primary">&leftarrow;</a>
+                {% endif %}
+                {% for page in pageRange%}
+                    {% if postList.number == page%}
+                        <a href="#" class="active btn btn-primary">{{ page }} &nbsp;</a>
+                        {% else %}
+                        <a href="{% url 'list-p' %}?page={{ page }}" class="btn btn-primary">{{ page }} &nbsp;</a>
+                    {% endif %}
+                {% endfor %}
+                {% if postList.has_next %}
+                    <a href="?page={{ postList.next_page_number }}" class="btn btn-primary">&rightarrow;</a>
+                {% endif %}
+                </div>
+                <span class="current">
+                    Page {{ postList.number }} of {{ postList.paginator.num_pages }}.
+                </span>
+            </span>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

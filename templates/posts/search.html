@@ -1,0 +1,14 @@
+{% load staticfiles %}
+<div class="card mb-4">
+    <h5 class="card-header">Search <span class="fa fa-search"></span> </h5>
+    <div class="card-body">
+        <form class="" action="" method="get">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search Posts" value="{% if request.GET.q %}{{ request.GET.q }}{% endif %}">
+                <span class="input-group-btn">
+                    <button class="btn btn-dark rounded-right" type="submit"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

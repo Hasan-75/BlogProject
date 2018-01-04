@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+    <header class="">
+      <div>
+        <div class="carousel-inner" role="listbox" style="margin: 0%">
+          <!-- Slide One - Set the background image for this slide in the line below -->
+          <div class="carousel-item active" style="background-image: url('{% static 'img/home-bg.jpg' %}')">
+            <div class="w3-center w3-display-middle w3-text-white w3-border w3-border-white w3-padding-large">
+                {% if firstPage %}
+                    <a href="{% url 'list-p' %}" class="btn btn-dark btn-lg">Go to Posts</a>
+                    {% else %}
+                    <h2>Write & Share</h2>
+                {% endif %}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </header>

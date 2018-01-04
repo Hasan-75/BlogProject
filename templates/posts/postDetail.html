@@ -1,0 +1,89 @@
+{% extends 'posts/base.html' %}
+{% block title %}
+    {{ block.super }} | {{ post.title }}
+{% endblock %}
+{% block style %}
+    <style>
+    .shareOpt .fa {
+      padding: 15px;
+      padding-right: 27px;
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+      text-decoration: none;
+      margin: 5px 5px;
+      border-radius: 50%;
+    }
+
+    .fa:hover {
+        opacity: 0.7;
+    }
+
+    .fa-facebook {
+      background: #3B5998;
+      color: white;
+    }
+
+    .fa-twitter {
+      background: #55ACEE;
+      color: white;
+    }
+
+    .fa-linkedin {
+      background: #007bb5;
+      color: white;
+    }
+        </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row col-sm-12">
+            <div class="col-sm-8"><h1 class="mt-4 mb-3">
+                {{ post.title }}
+            </h1></div>
+            <div class="col-sm-4 mt-4 mb-3">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'update-p' slug=post.slug %}" class="btn-info btn-sm pl-4 pr-4">Edit</a>
+                    <a href="{% url 'delete-p' slug=post.slug %}" class="btn-sm btn-danger pl-4 pr-4">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        {% if post.user.get_full_name %}<h4><b>By: </b>{{ post.user.get_full_name }}</h4>{% endif %}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><b>Posted</b> {{ post.timeStamp | timesince }} ago</li>
+            <li class="breadcrumb-item"><b>Updated</b> {{ post.update | timesince }} ago</li>
+            <li class="text-success text-right ml-5">{% include 'posts/message_display.html' %}</li>
+        </ol>
+        <div class="row">
+            <div class="col-lg-8">
+
+          <!-- Preview Image -->
+                <img class="img-fluid rounded" src="{{ post.image.url }}" alt="">
+                <hr>
+              <!-- Date/Time -->
+                <p class="shareOpt">
+                    <b>Posted on&nbsp;</b> {{ post.timeStamp }}
+                    | &nbsp;&nbsp;<b>Share on </b>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" class="fa fa-facebook">
+
+                    </a>
+                    <a href="https://twitter.com/home?status={{ shareString }}%20{{ request.build_absolute_uri }}" class="fa fa-twitter">
+
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}&summary={{ shareString }}&source={{ request.build_absolute_uri }}" class="fa fa-linkedin">
+
+                    </a>
+                </p>
+              <hr>
+                {% autoescape off %}
+                <div class="mb-0 blogContent">{{ post.content | linebreaks}}</div>
+                {% endautoescape %}
+                <div>
+                    <div class="fb-comments" data-href={{ request.build_absolute_uri }} data-numposts="5"></div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+{% endblock %}
